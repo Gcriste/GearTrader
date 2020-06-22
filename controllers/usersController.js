@@ -8,7 +8,7 @@ const gravatar = require('gravatar');
 module.exports = {
 	findAll: function(req, res) {
 		db.User
-			.find({ _id: req.user.id })
+			.findOne({ _id: req.user.id })
 			.then((user) => {
 				if (user) {
 					res.status(200).json(user);
@@ -28,7 +28,7 @@ module.exports = {
 	},
 	create: function(req, res) {
 		const { email, password, firstName, lastName } = req.body;
-		db.User.find({ email }).then((user) => {
+		db.User.findOne({ email }).then((user) => {
 			if (user) {
 				return res.status(400).json({ email: 'This email already exists.' });
 			} else {
@@ -93,7 +93,7 @@ module.exports = {
 	},
 	login: function(req, res) {
 		const { email, password } = req.body;
-		db.User.find({ email }).then((user) => {
+		db.User.findOne({ email: email }).then((user) => {
 			if (!user) {
 				return res.status(404).json({ user: 'Email not found' });
 			}
